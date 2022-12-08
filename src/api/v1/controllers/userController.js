@@ -22,6 +22,7 @@ const signup = async (req, res) => {
         })
       } else {
         const user = await userService.createUser(req.body)
+
         console.log(user)
         res.status(helper.ERROR200.code).json({
           status: helper.ERROR200.status,
@@ -39,4 +40,21 @@ const signup = async (req, res) => {
   }
 }
 
-module.exports = { signup }
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getUsers()
+    res.status(helper.ERROR200.code).json({
+      status: helper.ERROR200.status,
+      data: users,
+      message: 'USERS FOUND',
+    })
+  } catch (err) {
+    res.status(helper.ERROR500.code).json({
+      status: helper.ERROR500.status,
+      data: err.message,
+      message: helper.ERROR500.message,
+    })
+  }
+}
+
+module.exports = { signup, getAllUsers }
