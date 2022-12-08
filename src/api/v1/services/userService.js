@@ -18,4 +18,9 @@ const createUser = async (data) => {
   return newUser
 }
 
-module.exports = { getEmail, createUser }
+const getUsers = async () => {
+  const users = await userModel.find({})
+  return users
+}
+
+module.exports = { getEmail, createUser, getUsers }
