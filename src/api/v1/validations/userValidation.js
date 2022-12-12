@@ -8,7 +8,7 @@ const userValidation = joi.object({
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'in', 'net'] } }),
 
   phone: joi.string().trim().min(10).max(10),
-  password: joi.string().trim().min(8).max(16),
+  password: joi.string().trim().min(8).max(64),
   profile: joi.string().trim(),
 })
 

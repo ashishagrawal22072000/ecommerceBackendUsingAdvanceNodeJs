@@ -1,19 +1,18 @@
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
+require('dotenv').config()
+const jwt = require('jsonwebtoken')
 const generateToken = (data) => {
-  return jwt.sign({ email: data.email, id: data._id }, process.env.SECRET_KEY);
-};
+  return jwt.sign({ email: data.email, id: data._id }, process.env.SECRET_KEY)
+}
 
-const getToken = async (req) => {
-  console.log(req.headers.authorization);
+const getToken = (req) => {
   if (req.headers.authorization) {
-    return await req.headers.authorization.split(" ")[1];
+    return req.headers.authorization
   }
-  return null;
-};
+  return null
+}
 
 const verifyToken = (token) => {
-  return jwt.verify(token, process.env.SECRET_KEY);
-};
+  return jwt.verify(token, process.env.SECRET_KEY)
+}
 
-module.exports = { generateToken, getToken, verifyToken };
+module.exports = { generateToken, getToken, verifyToken }

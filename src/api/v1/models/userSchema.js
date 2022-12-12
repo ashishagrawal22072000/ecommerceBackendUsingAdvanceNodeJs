@@ -22,11 +22,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, `Password is required`],
     minlength: [8, `Password can't be smaller than 8 characters`],
-    maxlength: [16, `Password can't be larger than 16 characters`],
+    maxlength: [64, `Password can't be larger than 64 characters`],
   },
   profile: {
     type: String,
     required: [true, `Profile Image is required`],
+  },
+  isEmailVarified: {
+    type: Boolean,
+    default: false,
   },
 })
 
