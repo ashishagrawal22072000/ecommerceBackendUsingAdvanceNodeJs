@@ -218,6 +218,55 @@ const updateUser = async (req, res) => {
   }
 }
 
+const uploadImage = (req, res) => {
+  try {
+    const imgUrl = userService.getImageUrl(req)
+    if (imgUrl) {
+      res.status(helper.ERROR200.code).json({
+        status: helper.ERROR200.status,
+        url: imgUrl,
+        message: 'Image upload successfully',
+      })
+    } else {
+      res.status(helper.ERROR400.code).json({
+        status: helper.ERROR400.status,
+        url: imgUrl,
+        message: 'File upload failed',
+      })
+    }
+  } catch (err) {
+    res.status(helper.ERROR500.code).json({
+      status: helper.ERROR500.status,
+      data: err.message,
+      message: helper.ERROR500.message,
+    })
+  }
+}
+
+const getImage = async (req, res) => {
+  try {
+    console.log('ehiervrfivbrfivbefbe')
+    const file = await userService.getImage(req.params.filename)
+    console.log(file)
+    if (file) {
+      const readStream = await userService.readImage(file._id)
+      readStream.pipe(res)
+    } else {
+      res.status(helper.ERROR400.code).json({
+        status: helper.status400.status,
+        url: {},
+        message: 'File Not Found',
+      })
+    }
+  } catch (err) {
+    res.status(helper.ERROR500.code).json({
+      status: helper.ERROR500.status,
+      data: err.message,
+      message: helper.ERROR500.message,
+    })
+  }
+}
+
 module.exports = {
   signup,
   getAllUsers,
@@ -226,4 +275,6 @@ module.exports = {
   verifyEmail,
   deleteUser,
   updateUser,
+  uploadImage,
+  getImage,
 }

@@ -1,6 +1,17 @@
 const userModel = require('./../models/userSchema')
 const bcrypt = require('bcryptjs')
+const grid = require('gridfs-stream')
+const mongoose = require('mongoose')
+let gfs
 
+const conn = mongoose.connection
+conn.once('open', () => {
+  gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+    bucketName: 'fs',
+  })
+  gfs = grid(conn.db, mongoose.mongo)
+  gfs.collection('fs')
+})
 const getEmail = async (data) => {
   const email = await userModel.findOne({ email: data.email })
   return email
@@ -38,7 +49,6 @@ const deleteUserById = async (id) => {
 
 const updateUserById = async (req) => {
   const user = await userModel.findById(req.params.id)
-  console.log('PATCH', user)
   if (user) {
     const newUser = await userModel.findByIdAndUpdate(
       {
@@ -59,6 +69,23 @@ const updateUserById = async (req) => {
   }
 }
 
+const getImageUrl = (req) => {
+  if (req.file) {
+    return `${process.env.MAIN_URL}/user/image/${req.file.filename}`
+  } else {
+    return null
+  }
+}
+
+const getImage = async (fileName) => {
+  const file = await gfs.files.findOne({ filename: fileName })
+  return file
+}
+
+const readImage = async (id) => {
+  return await gridfsBucket.openDownloadStream(id)
+}
+
 module.exports = {
   getEmail,
   createUser,
@@ -67,4 +94,7 @@ module.exports = {
   getPassword,
   deleteUserById,
   updateUserById,
+  getImageUrl,
+  getImage,
+  readImage,
 }

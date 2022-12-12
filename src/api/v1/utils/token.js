@@ -5,9 +5,7 @@ const generateToken = (data) => {
 }
 
 const getToken = (req) => {
-  console.log(req.headers.authorization)
   if (req.headers.authorization) {
-    console.log('HELLO FROM TOKEN', req.headers.authorization)
     return req.headers.authorization
   }
   return null
