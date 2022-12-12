@@ -247,7 +247,6 @@ const getImage = async (req, res) => {
   try {
     console.log('ehiervrfivbrfivbefbe')
     const file = await userService.getImage(req.params.filename)
-    console.log(file)
     if (file) {
       const readStream = await userService.readImage(file._id)
       readStream.pipe(res)
